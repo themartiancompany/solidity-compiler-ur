@@ -1,0 +1,18 @@
+pkgbase = solidity-compiler
+	pkgdesc = Solidity compiler.
+	pkgver = 0.0.0.0.0.0.0.0.0.0.0.0.1
+	pkgrel = 1
+	url = https://github.com/themartiancompany/solidity-compiler
+	arch = any
+	license = AGPL3
+	checkdepends = shellcheck
+	makedepends = make
+	depends = hardhat
+	depends = libcrash-bash
+	depends = tsu
+	source = solidity-compiler-d2329dd7ec2d88c9f5cf5dbd1436d367e02cbc55.zip::https://github.com/themartiancompany/solidity-compiler/archive/d2329dd7ec2d88c9f5cf5dbd1436d367e02cbc55.zip
+	validpgpkeys = 97E989E6CF1D2C7F7A41FF9F95684DBE23D6A3E9
+	validpgpkeys = DD6732B02E6C88E9E27E2E0D5FC6652B9D9A6C01
+	sha256sums = 6d054fc6471df53e47b33d669fa9e35920aefe5573224652c9c7c64377c35797
+
+pkgname = solidity-compiler
