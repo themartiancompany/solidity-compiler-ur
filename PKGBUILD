@@ -26,14 +26,20 @@ license=(
 depends=(
   "hardhat"
   "libcrash-bash"
+  "solidity-analyzer"
 )
 _os="$( \
   uname \
     -o)"
+[[ "${_os}" == "GNU/Linux" ]] && \
+[[ "${_os}" != "Android" ]] && \
+  depends+=(
+    'eslint-plugin-hardhat-internal-rules'
+  )
 [[ "${_os}" != "GNU/Linux" ]] && \
 [[ "${_os}" == "Android" ]] && \
   depends+=(
-    'tsu'
+    # 'tsu'
   )
 optdepends=(
 )
