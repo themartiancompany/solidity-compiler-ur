@@ -34,6 +34,8 @@ _os="$( \
 [[ "${_os}" == "GNU/Linux" ]] && \
 [[ "${_os}" != "Android" ]] && \
   depends+=(
+    'findutils'
+    'cpio'
     'eslint-plugin-hardhat-internal-rules'
   )
 [[ "${_os}" != "GNU/Linux" ]] && \
