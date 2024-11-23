@@ -37,6 +37,7 @@ _os="$( \
     'findutils'
     'cpio'
     'eslint-plugin-hardhat-internal-rules'
+    'eslint-plugin-slow-imports'
   )
 [[ "${_os}" != "GNU/Linux" ]] && \
 [[ "${_os}" == "Android" ]] && \
