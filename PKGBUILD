@@ -25,7 +25,9 @@ license=(
 )
 depends=(
   "hardhat"
+  "indent"
   "libcrash-bash"
+  "sed"
   "solidity-analyzer"
 )
 _os="$( \
