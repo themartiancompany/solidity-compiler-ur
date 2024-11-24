@@ -7,8 +7,8 @@ _offline="false"
 _git="false"
 _pkg=solidity-compiler
 pkgname="${_pkg}"
-pkgver="0.0.0.0.0.0.0.0.0.0.0.1.1.1.1"
-_commit="dadb8bbced7171cf5090e95883993b9b356177ed"
+pkgver="0.0.0.0.0.0.0.0.0.0.0.1.1.1.1.1"
+_commit="069b3db870af4356c0f251ece096dbaf8b4dcefe"
 pkgrel=1
 _pkgdesc=(
   "Solidity compiler."
@@ -80,7 +80,7 @@ _tarname="${pkgname}-${_tag}"
     _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
   elif [[ "${_tag_name}" == "commit" ]]; then
     _tar="${_tarname}.zip::${_url}/archive/${_commit}.zip"
-    _sum='90f0530e6bc33ed5329da441b7ab95a82942fc3095c4d500fcae236d0f1a7e5c'
+    _sum='955be86b162169b67c4497bfc3db2d03263f2e47a48a3bb6586d59b014595c31'
   fi && \
     source+=(
       "${_tar}"
