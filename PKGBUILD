@@ -56,38 +56,35 @@ makedepends=(
 checkdepends=(
   "shellcheck"
 )
-source=()
-sha256sums=()
 _url="${url}"
 _tag="${_commit}"
 _tag_name="commit"
 _tarname="${pkgname}-${_tag}"
-[[ "${_offline}" == "true" ]] && \
+if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
-[[ "${_git}" == true ]] && \
+fi
+if [[ "${_git}" == true ]]; then
   makedepends+=(
     "git"
-  ) && \
-  source+=(
-    "${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
-  ) && \
-  sha256sums+=(
-    SKIP
   )
-[[ "${_git}" == false ]] && \
+  _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
+  _sum="SKIP"
+elif [[ "${_git}" == false ]]; then
   if [[ "${_tag_name}" == 'pkgver' ]]; then
-    _tar="${_tarname}.tar.gz::${_url}/archive/refs/tags/${_tag}.tar.gz"
+    _src="${_tarname}.tar.gz::${_url}/archive/refs/tags/${_tag}.tar.gz"
     _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
   elif [[ "${_tag_name}" == "commit" ]]; then
-    _tar="${_tarname}.zip::${_url}/archive/${_commit}.zip"
+    _src="${_tarname}.zip::${_url}/archive/${_commit}.zip"
     _sum='955be86b162169b67c4497bfc3db2d03263f2e47a48a3bb6586d59b014595c31'
-  fi && \
-    source+=(
-      "${_tar}"
-    ) && \
-    sha256sums+=(
-      "${_sum}"
-    )
+  fi
+fi
+source=(
+  "${_src}"
+)
+sha256sums=(
+  "${_sum}"
+)
+
 validpgpkeys=(
   # Truocolo <truocolo@aol.com>
   '97E989E6CF1D2C7F7A41FF9F95684DBE23D6A3E9'
