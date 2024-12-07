@@ -13,7 +13,7 @@ pkgver="0.0.0.0.0.0.0.0.0.0.0.1.1.1.1.1"
 _commit="069b3db870af4356c0f251ece096dbaf8b4dcefe"
 pkgrel=1
 _pkgdesc=(
-  "Solidity compiler."
+  "Solidity compiler supporting multiple backends."
 )
 pkgdesc="${_pkgdesc[*]}"
 arch=(
