@@ -5,6 +5,8 @@
 
 _offline="false"
 _git="false"
+_solc="true"
+_hardhat="true"
 _pkg=solidity-compiler
 pkgname="${_pkg}"
 pkgver="0.0.0.0.0.0.0.0.0.0.0.1.1.1.1.1"
@@ -21,35 +23,55 @@ _http="https://github.com"
 _ns="themartiancompany"
 url="${_http}/${_ns}/${pkgname}"
 license=(
-  AGPL3
+  'AGPL3'
 )
 depends=(
-  "hardhat"
-  "indent"
   "libcrash-bash"
   "sed"
-  "solidity-analyzer"
 )
+optdepends=()
 _os="$( \
   uname \
     -o)"
-[[ "${_os}" == "GNU/Linux" ]] && \
-[[ "${_os}" != "Android" ]] && \
+if [[ "${_hardhat}" == "true" ]]; then
   depends+=(
-    'findutils'
-    'cpio'
-    'eslint-plugin-hardhat-internal-rules'
-    'eslint-plugin-slow-imports'
+    "indent"
+    "solidity-analyzer"
+    "hardhat"
   )
-[[ "${_os}" != "GNU/Linux" ]] && \
-[[ "${_os}" == "Android" ]] && \
+  if [[ "${_os}" == "GNU/Linux" ]] && \
+     [[ "${_os}" != "Android" ]]; then
+    depends+=(
+      'findutils'
+      'cpio'
+      'eslint-plugin-hardhat-internal-rules'
+      'eslint-plugin-slow-imports'
+    )
+  fi
+elif [[ "${_hardhat}" == "false" ]]; then
+  optdepends+=(
+    "hardhat: hardhat backend support"
+  )
+fi
+if [[ "${_solc}" == "true" ]]; then
+  depends+=(
+    "solidity"
+  )
+elif [[ "${_solc}" == "false" ]]; then
+  optdepends+=(
+    "solidity: solc backend support"
+  )
+fi
+if [[ "${_os}" != "GNU/Linux" ]] && \
+   [[ "${_os}" == "Android" ]]; then
   depends+=(
   )
-optdepends=(
-)
-[[ "${_os}" == 'Android' ]] && \
   optdepends+=(
   )
+fi
+optdepends+=(
+  "solidity<ver>: support for solc version <ver> in the correspondent backend"
+)
 makedepends=(
   make
 )
