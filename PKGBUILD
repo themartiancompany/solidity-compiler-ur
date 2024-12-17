@@ -9,8 +9,8 @@ _solc="true"
 _hardhat="true"
 _pkg=solidity-compiler
 pkgname="${_pkg}"
-pkgver="0.0.0.0.0.0.0.0.0.0.0.1.1.1.1.1"
-_commit="069b3db870af4356c0f251ece096dbaf8b4dcefe"
+pkgver="0.0.0.0.0.0.0.0.0.0.0.1.1.1.1.1.1"
+_commit="23bbb781fed432a1b2c8acef0e792208337195d6"
 pkgrel=1
 _pkgdesc=(
   "Solidity compiler supporting multiple backends."
@@ -97,7 +97,7 @@ elif [[ "${_git}" == false ]]; then
     _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
   elif [[ "${_tag_name}" == "commit" ]]; then
     _src="${_tarname}.zip::${_url}/archive/${_commit}.zip"
-    _sum='955be86b162169b67c4497bfc3db2d03263f2e47a48a3bb6586d59b014595c31'
+    _sum='a7c3d4689e85d69c45e8dc2003ca339b6613787845f8dc0c88cb6b57a3989634'
   fi
 fi
 source=(
