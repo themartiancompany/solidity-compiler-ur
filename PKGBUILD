@@ -17,7 +17,7 @@ _pkgdesc=(
 )
 pkgdesc="${_pkgdesc[*]}"
 arch=(
-  any
+  'any'
 )
 _http="https://github.com"
 _ns="themartiancompany"
