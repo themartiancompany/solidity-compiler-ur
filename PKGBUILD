@@ -190,6 +190,11 @@ package() {
     PREFIX="/usr" \
     DESTDIR="${pkgdir}" \
     install
+  install \
+    -Dm644 \
+    "COPYING" \
+    -t \
+    "${pkgdir}/usr/share/licenses/${pkgbase}-docs/"
 }
 
 # vim: ft=sh syn=sh et
