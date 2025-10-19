@@ -194,7 +194,7 @@ package() {
     -Dm644 \
     "COPYING" \
     -t \
-    "${pkgdir}/usr/share/licenses/${pkgbase}-docs/"
+    "${pkgdir}/usr/share/licenses/${pkgbase}"
 }
 
 # vim: ft=sh syn=sh et
