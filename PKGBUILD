@@ -71,7 +71,7 @@ if [[ "${_docs}" == "true" ]]; then
     "${_pkg}"
   )
 fi
-pkgver="0.0.0.0.0.0.0.0.0.0.1"
+pkgver="0.0.0.0.0.0.0.0.0.0.1.1"
 _commit="7d03014fedb66944a4b352c039e0397d03235da3"
 pkgrel=1
 _pkgdesc=(
@@ -131,9 +131,12 @@ if [[ "${_os}" != "GNU/Linux" ]] && \
   optdepends+=(
   )
 fi
+_solidity_optdepends=(
+  "solidityX.Y.Z:"
+    "support for solc version X.Y.Z in the correspondent backend."
+)
 optdepends+=(
-  "solidity<ver>:"
-    "support for solc version <ver> in the correspondent backend."
+  "${_solidity_optdpends[*]}"
 )
 makedepends=(
   'make'
