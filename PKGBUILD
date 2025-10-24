@@ -70,7 +70,7 @@ pkgname=(
 )
 if [[ "${_docs}" == "true" ]]; then
   pkgname+=(
-    "${_pkg}"
+    "${_pkg}-docs"
   )
 fi
 pkgver="0.0.0.0.0.0.0.0.0.0.1.1"
