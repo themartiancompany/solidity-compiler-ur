@@ -40,15 +40,39 @@ if [[ ! -v "_evmfs" ]]; then
     _evmfs="false"
   fi
 fi
-_offline="false"
-_git="false"
+if [[ ! -v "_offline" ]]; then
+  _offline="true"
+fi
+if [[ ! -v "_offline" ]]; then
+  _git="false"
+fi
+if [[ ! -v "_git_http" ]]; then
+  _git_http="gitlab"
+fi
+if [[ ! -v "_docs" ]]; then
+  _docs="true"
+fi
+if [[ ! -v "_archive_format" ]]; then
+  _archive_format="tar.gz"
+  if [[ "${_git_http}" == "github" ]]; then
+    _archive_format="zip"
+  fi
+fi
 _solc="true"
 _hardhat="true"
 _py="python"
 _pkg=solidity-compiler
-pkgname="${_pkg}"
+pkgbase="${_pkg}"
+pkgname=(
+  "${_pkg}"
+)
+if [[ "${_docs}" == "true" ]]; then
+  pkgname+=(
+    "${_pkg}"
+  )
+fi
 pkgver="0.0.0.0.0.0.0.0.0.0.1"
-_commit="e727fc422b5aa1d8dc5fda60d9078dc81c2581c4"
+_commit="7d03014fedb66944a4b352c039e0397d03235da3"
 pkgrel=1
 _pkgdesc=(
   "Solidity compiler supporting multiple backends."
@@ -57,7 +81,7 @@ pkgdesc="${_pkgdesc[*]}"
 arch=(
   'any'
 )
-_http="https://github.com"
+_http="https://${_git_http}.com"
 _ns="themartiancompany"
 url="${_http}/${_ns}/${pkgname}"
 license=(
@@ -108,62 +132,71 @@ if [[ "${_os}" != "GNU/Linux" ]] && \
   )
 fi
 optdepends+=(
-  "solidity<ver>: support for solc version <ver> in the correspondent backend"
+  "solidity<ver>:"
+    "support for solc version <ver> in the correspondent backend."
 )
 makedepends=(
   'make'
-  "${_py}-docutils"
 )
+if [[ "${_docs}" == "true" ]]; then
+  makedepends+=(
+    "${_py}-docutils"
+  )
+fi
 checkdepends=(
   "shellcheck"
 )
 _url="${url}"
 _tag="${_commit}"
 _tag_name="commit"
-_tarname="${pkgname}-${_tag}"
+_tarname="${_pkg}-${_tag}"
+_tarfile="${_tarname}.${_archive_format}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
 fi
+_sum="9764e8d75cd5f94298c40aa828d0b2c8408def3d922064f03898b4033ba5192e"
+_sig_sum="cf9ffff10b05bd3dd9a04ea94664bda7b7dc0be6ff7b765a3f3165d04f5cfe7c"
+_evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
 _evmfs_network="100"
 _evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
-_evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
-_archive_sum='f4c028a9f7afe6e00a54053a49f1718aa2ed827a82f8c3af98203d1ed4e2a6a1'
-_evmfs_archive_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_archive_sum}"
-_evmfs_archive_src="${_tarname}.zip::${_evmfs_archive_uri}"
-_archive_sig_sum="e5de38eaf599383800dd29a7b0e7f09b52b315410e9b555d8b1fd8417270c90b"
-_archive_sig_uri="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}/${_archive_sig_sum}"
-_archive_sig_src="${_tarname}.zip.sig::${_archive_sig_uri}"
+_evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
+_evmfs_uri="${_evmfs_dir}/${_sum}"
+_evmfs_src="${_tarfile}::${_evmfs_uri}"
+_sig_uri="${_evmfs_dir}/${_sig_sum}"
+_sig_src="${_tarfile}.sig::${_sig_uri}"
+source=()
+sha256sums=()
 if [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
     "evmfs"
   )
-  _src="${_evmfs_archive_src}"
-  _sum="${_archive_sum}"
+  _src="${_evmfs_src}"
   source+=(
-    "${_archive_sig_src}"
+    "${_sig_src}"
   )
   sha256sums+=(
-    "${_archive_sig_sum}"
+    "${_sig_sum}"
   )
 elif [[ "${_git}" == true ]]; then
   makedepends+=(
     "git"
   )
-  _src="${_tarname}::git+${_url}#${_tag_name}=${_tag}?signed"
+  _uri="git+${_url}#${_tag_name}=${_tag}?signed"
+  _src="${_tarname}::${_uri}"
   _sum="SKIP"
 elif [[ "${_git}" == false ]]; then
   if [[ "${_tag_name}" == 'pkgver' ]]; then
-    _src="${_tarname}.tar.gz::${_url}/archive/refs/tags/${_tag}.tar.gz"
+    _uri="${_url}/archive/refs/tags/${_tag}.tar.gz"
     _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
   elif [[ "${_tag_name}" == "commit" ]]; then
-    _src="${_tarname}.zip::${_url}/archive/${_commit}.zip"
-    _sum="${_archive_sum}"
+    _uri="${_url}/archive/${_commit}.zip"
   fi
+  _src="${_tarfile}::${_uri}"
 fi
-source=(
+source+=(
   "${_src}"
 )
-sha256sums=(
+sha256sums+=(
   "${_sum}"
 )
 
@@ -183,18 +216,44 @@ check() {
     check
 }
 
-package() {
+package_solidity-compiler() {
+  local \
+    _make_opts=()
+  _make_opts+=(
+    PREFIX="/usr"
+    DESTDIR="${pkgdir}"
+  )
   cd \
     "${_tarname}"
   make \
-    PREFIX="/usr" \
-    DESTDIR="${pkgdir}" \
-    install
+    "${_make_opts[@]}" \
+    install-scripts
   install \
     -Dm644 \
     "COPYING" \
     -t \
-    "${pkgdir}/usr/share/licenses/${pkgbase}"
+    "${pkgdir}/usr/share/licenses/${pkgname}/"
+}
+
+package_solidity-compiler-docs() {
+  local \
+    _make_opts=()
+  depends=()
+  _make_opts+=(
+    PREFIX="/usr"
+    DESTDIR="${pkgdir}"
+  )
+  cd \
+    "${_tarname}"
+  make \
+    "${_make_opts[@]}" \
+    install-doc \
+    install-man
+  install \
+    -Dm644 \
+    "COPYING" \
+    -t \
+    "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
 
 # vim: ft=sh syn=sh et
