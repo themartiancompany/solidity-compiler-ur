@@ -136,7 +136,7 @@ _solidity_optdepends=(
     "support for solc version X.Y.Z in the correspondent backend."
 )
 optdepends+=(
-  "${_solidity_optdpends[*]}"
+  "${_solidity_optdepends[*]}"
 )
 makedepends=(
   'make'
