@@ -19,15 +19,17 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Maintainer:
+# Maintainers:
 #   Truocolo
 #     <truocolo@aol.com>
 #     <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
-# Maintainer:
 #   Pellegrino Prevete (dvorak)
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
+_os="$( \
+  uname \
+    -o)"
 _evmfs_available="$( \
   command \
     -v \
@@ -92,9 +94,6 @@ depends=(
   "sed"
 )
 optdepends=()
-_os="$( \
-  uname \
-    -o)"
 if [[ "${_hardhat}" == "true" ]]; then
   depends+=(
     "indent"
@@ -189,7 +188,7 @@ elif [[ "${_git}" == true ]]; then
   _sum="SKIP"
 elif [[ "${_git}" == false ]]; then
   if [[ "${_tag_name}" == 'pkgver' ]]; then
-    _uri="${_url}/archive/refs/tags/${_tag}.tar.gz"
+    _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
     _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
   elif [[ "${_tag_name}" == "commit" ]]; then
     _uri="${_url}/archive/${_commit}.zip"
@@ -202,12 +201,13 @@ source+=(
 sha256sums+=(
   "${_sum}"
 )
-
 validpgpkeys=(
-  # Truocolo <truocolo@aol.com>
+  # Truocolo
+  #   <truocolo@aol.com>
   '97E989E6CF1D2C7F7A41FF9F95684DBE23D6A3E9'
   'DD6732B02E6C88E9E27E2E0D5FC6652B9D9A6C01'
-  # Pellegrino Prevete (dvorak) <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
+  # Pellegrino Prevete (dvorak)
+  #   <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
   '12D8E3D7888F741E89F86EE0FEC8567A644F1D16'
 )
 
@@ -250,10 +250,12 @@ package_solidity-compiler-docs() {
     "${_tarname}"
   make \
     "${_make_opts[@]}" \
-    install-doc \
+    install-doc
+  make \
+    "${_make_opts[@]}" \
     install-man
   install \
-    -Dm644 \
+    -vDm644 \
     "COPYING" \
     -t \
     "${pkgdir}/usr/share/licenses/${pkgname}/"
