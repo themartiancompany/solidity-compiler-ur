@@ -45,7 +45,7 @@ fi
 if [[ ! -v "_offline" ]]; then
   _offline="true"
 fi
-if [[ ! -v "_offline" ]]; then
+if [[ ! -v "_git" ]]; then
   _git="false"
 fi
 if [[ ! -v "_git_http" ]]; then
