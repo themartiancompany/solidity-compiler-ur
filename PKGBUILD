@@ -74,7 +74,7 @@ if [[ "${_docs}" == "true" ]]; then
   )
 fi
 pkgver="0.0.0.0.0.0.0.0.0.0.1.1"
-_commit="7d03014fedb66944a4b352c039e0397d03235da3"
+_commit="f7353dcfb3f7a4c21012f07daf38a2f46fc7a8a4"
 pkgrel=1
 _pkgdesc=(
   "Solidity compiler supporting multiple backends."
@@ -156,8 +156,8 @@ _tarfile="${_tarname}.${_archive_format}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
 fi
-_sum="9764e8d75cd5f94298c40aa828d0b2c8408def3d922064f03898b4033ba5192e"
-_sig_sum="cf9ffff10b05bd3dd9a04ea94664bda7b7dc0be6ff7b765a3f3165d04f5cfe7c"
+_sum="13c5edc5a7c43879f42df2b473112331816a91a681c72946549f5d8e6a9ccd82"
+_sig_sum="5cf0073110b0738ea519b0b30d69c6feb346dfad7c6c946cf00eb0c0aef59be0"
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
 _evmfs_network="100"
 _evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
@@ -172,28 +172,32 @@ if [[ "${_evmfs}" == "true" ]]; then
   makedepends+=(
     "evmfs"
   )
-  _src="${_evmfs_src}"
-  source+=(
-    "${_sig_src}"
-  )
-  sha256sums+=(
-    "${_sig_sum}"
-  )
-elif [[ "${_git}" == true ]]; then
-  makedepends+=(
-    "git"
-  )
-  _uri="git+${_url}#${_tag_name}=${_tag}?signed"
-  _src="${_tarname}::${_uri}"
-  _sum="SKIP"
-elif [[ "${_git}" == false ]]; then
-  if [[ "${_tag_name}" == 'pkgver' ]]; then
-    _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
-    _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
-  elif [[ "${_tag_name}" == "commit" ]]; then
-    _uri="${_url}/archive/${_commit}.zip"
+  if [[ "${_git}" == "false" ]]; then
+    _src="${_evmfs_src}"
+    source+=(
+      "${_sig_src}"
+    )
+    sha256sums+=(
+      "${_sig_sum}"
+    )
   fi
-  _src="${_tarfile}::${_uri}"
+if [[ "${_evmfs}" == "true" ]]; then
+  if [[ "${_git}" == true ]]; then
+    makedepends+=(
+      "git"
+    )
+    _uri="git+${_url}#${_tag_name}=${_tag}?signed"
+    _src="${_tarname}::${_uri}"
+    _sum="SKIP"
+  elif [[ "${_git}" == false ]]; then
+    if [[ "${_tag_name}" == 'pkgver' ]]; then
+      _uri="${_url}/archive/refs/tags/${_tag}.${_archive_format}"
+      _sum="d4f4179c6e4ce1702c5fe6af132669e8ec4d0378428f69518f2926b969663a91"
+    elif [[ "${_tag_name}" == "commit" ]]; then
+      _uri="${_url}/archive/${_commit}.zip"
+    fi
+    _src="${_tarfile}::${_uri}"
+  fi
 fi
 source+=(
   "${_src}"
