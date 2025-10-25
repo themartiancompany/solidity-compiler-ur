@@ -181,7 +181,7 @@ if [[ "${_evmfs}" == "true" ]]; then
       "${_sig_sum}"
     )
   fi
-if [[ "${_evmfs}" == "true" ]]; then
+elif [[ "${_evmfs}" == "false" ]]; then
   if [[ "${_git}" == true ]]; then
     makedepends+=(
       "git"
