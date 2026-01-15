@@ -27,10 +27,10 @@
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
-_os="$( \
+_os="$(
   uname \
     -o)"
-_evmfs_available="$( \
+_evmfs_available="$(
   command \
     -v \
     "evmfs" || \
@@ -75,7 +75,7 @@ if [[ "${_docs}" == "true" ]]; then
 fi
 pkgver="0.0.0.0.0.0.0.0.0.0.1.1"
 _commit="f7353dcfb3f7a4c21012f07daf38a2f46fc7a8a4"
-pkgrel=1
+pkgrel=2
 _pkgdesc=(
   "Solidity compiler supporting multiple backends."
 )
