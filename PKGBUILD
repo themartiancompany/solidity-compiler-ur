@@ -181,8 +181,8 @@ _tarfile="${_tarname}.${_archive_format}"
 if [[ "${_offline}" == "true" ]]; then
   _url="file://${HOME}/${pkgname}"
 fi
-_sum="13c5edc5a7c43879f42df2b473112331816a91a681c72946549f5d8e6a9ccd82"
-_sig_sum="5cf0073110b0738ea519b0b30d69c6feb346dfad7c6c946cf00eb0c0aef59be0"
+_sum="31b3fb6f8a76a6fcd6f8b6c207304eb058353b6cd7ffdef0ba93884e3f6f4f67"
+_sig_sum="68f8ceae8accccce32b37577a0af1f4668b5299ccfc803487d0b99d98fdb55c1"
 # Dvorak
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
 # Gnosis
