@@ -43,21 +43,37 @@ if [[ ! -v "_evmfs" ]]; then
   fi
 fi
 if [[ ! -v "_offline" ]]; then
-  _offline="true"
+  _offline="false"
 fi
 if [[ ! -v "_git" ]]; then
   _git="false"
 fi
+if [[ ! -v "_git_service" ]]; then
+  _git_service="gitlab"
+  _git_service="github"
+fi
 if [[ ! -v "_git_http" ]]; then
-  _git_http="gitlab"
+  _git_http="${_git_service}"
+fi
+if [[ ! -v "_ns" ]]; then
+  _ns="themartiancompany"
 fi
 if [[ ! -v "_docs" ]]; then
   _docs="true"
 fi
 if [[ ! -v "_archive_format" ]]; then
-  _archive_format="tar.gz"
-  if [[ "${_git_http}" == "github" ]]; then
-    _archive_format="zip"
+  if [[ "${_git}" == "true" ]]; then
+    if [[ "${_evmfs}" == "true" ]]; then
+      _archive_format="bundle"
+    elif [[ "${_evmfs}" == "false" ]]; then
+      _archive_format="git"
+    fi
+  elif [[ "${_git}" == "false" ]]; then
+    if [[ "${_git_service}" == "github" ]]; then
+      _archive_format="zip"
+    elif [[ "${_git_service}" == "gitlab" ]]; then
+      _archive_format="tar.gz"
+    fi
   fi
 fi
 _solc="true"
@@ -73,8 +89,8 @@ if [[ "${_docs}" == "true" ]]; then
     "${_pkg}-docs"
   )
 fi
-pkgver="0.0.0.0.0.0.0.0.0.0.1.1"
-_commit="f7353dcfb3f7a4c21012f07daf38a2f46fc7a8a4"
+pkgver="0.0.0.0.0.0.0.0.0.1"
+_commit="f4c70bf861644638e08bd331c41c9183c0b13edf"
 pkgrel=3
 _pkgdesc=(
   "Solidity compiler supporting multiple backends."
@@ -84,7 +100,6 @@ arch=(
   'any'
 )
 _http="https://${_git_http}.com"
-_ns="themartiancompany"
 url="${_http}/${_ns}/${pkgname}"
 license=(
   'AGPL3'
@@ -140,6 +155,16 @@ optdepends+=(
 makedepends=(
   'make'
 )
+if [[ "${_evmfs}" == "true" ]]; then
+  makedepends+=(
+    "evmfs"
+  )
+fi
+if [[ "${_git}" == true ]]; then
+  makedepends+=(
+    "git"
+  )
+fi
 if [[ "${_docs}" == "true" ]]; then
   makedepends+=(
     "${_py}-docutils"
@@ -160,8 +185,12 @@ _sum="13c5edc5a7c43879f42df2b473112331816a91a681c72946549f5d8e6a9ccd82"
 _sig_sum="5cf0073110b0738ea519b0b30d69c6feb346dfad7c6c946cf00eb0c0aef59be0"
 # Dvorak
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
+# Gnosis
 _evmfs_network="100"
 _evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+# Harmony
+_evmfs_network="1666600000"
+_evmfs_address="0x1f762a05cfab651d3d95778f9c89c46545913623"
 _evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
 _evmfs_uri="${_evmfs_dir}/${_sum}"
 _evmfs_src="${_tarfile}::${_evmfs_uri}"
@@ -170,9 +199,6 @@ _sig_src="${_tarfile}.sig::${_sig_uri}"
 source=()
 sha256sums=()
 if [[ "${_evmfs}" == "true" ]]; then
-  makedepends+=(
-    "evmfs"
-  )
   if [[ "${_git}" == "false" ]]; then
     _src="${_evmfs_src}"
     source+=(
@@ -184,9 +210,6 @@ if [[ "${_evmfs}" == "true" ]]; then
   fi
 elif [[ "${_evmfs}" == "false" ]]; then
   if [[ "${_git}" == true ]]; then
-    makedepends+=(
-      "git"
-    )
     _uri="git+${_url}#${_tag_name}=${_tag}?signed"
     _src="${_tarname}::${_uri}"
     _sum="SKIP"
